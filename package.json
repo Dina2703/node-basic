@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Dina2703/node-basic#readme",
   "dependencies": {
     "express": "^4.18.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "morgan": "^1.10.0"
   }
 }

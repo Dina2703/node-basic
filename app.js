@@ -1,9 +1,25 @@
 const express = require("express");
+const morgan = require("morgan");
 //express app
 const app = express();
 
 //listen for requests
 app.listen(3000);
+
+//create custom middleware. call next() method at the end of your middleware code, in order to move to the next coming code block(below the middleware code block, which is route handlers in this case)
+// app.use((req, res, next) => {
+//   console.log("new request made");
+//   console.log("host: ", req.hostname);
+//   console.log("path: ", req.path);
+//   console.log("method: ", req.method);
+//   next();
+// });
+
+//3-d party middleware. Morgan utility
+app.use(morgan("dev"));
+
+//middleware & static files. Create a new directory, public. Express, by default does not allow you to serve static files. You need to enable it using the following built-in middleware. Otherwise you can't apply style.css roles for html files.
+app.use(express.static("public"));
 
 //route handlers
 app.get("/", (req, res) => {
