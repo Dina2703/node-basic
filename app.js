@@ -1,12 +1,13 @@
 const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
+const Blog = require("./models/blog");
 //express app
 const app = express();
 
 //connect to Mongodb
 const dbURI =
-  "mongodb+srv://dina:dina2703@cluster1.wtcd8.mongodb.net/node-tuts?retryWrites=true&w=majority";
+  "mongodb+srv://dina:dina2703@cluster1.wtcd8.mongodb.net/note-tuts?retryWrites=true&w=majority";
 //use mongoose object to connect to the database
 mongoose
   .connect(dbURI)
@@ -24,6 +25,43 @@ mongoose
 
 //3-d party middleware. Morgan utility
 app.use(morgan("dev"));
+
+//mongoose and mongo sandbox routes. TEST
+//create a new doc and save to the collection in our database
+app.get("/add-blog", (req, res) => {
+  //with 'new' word we create a new instance of the Blog document, and pass required proporties, which we defined in 'blogSchema'
+  const newBlog = new Blog({
+    title: "blog number 2",
+    snippet: "test blog",
+    body: "more about this blog",
+  });
+  //to save just created newBlog to 'blogs' collection in the database
+  newBlog
+    .save()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => console.log(err));
+});
+
+//get all blogs
+app.get("/all-blogs", (req, res) => {
+  Blog.find({})
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+//find a single blog
+
+app.get("/single-blog", (req, res) => {
+  Blog.findById("62c6410c7fe3aa8fcd5e0dc4")
+    .then((result) => res.send(result))
+    .catch((err) => console.log(err));
+});
 
 //middleware & static files. Create a new directory, public. Express, by default does not allow you to serve static files. You need to enable it using the following built-in middleware. Otherwise you can't apply style.css roles for html files.
 app.use(express.static("public"));
