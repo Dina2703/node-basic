@@ -1,10 +1,17 @@
 const express = require("express");
 const morgan = require("morgan");
+const mongoose = require("mongoose");
 //express app
 const app = express();
 
-//listen for requests
-app.listen(3000);
+//connect to Mongodb
+const dbURI =
+  "mongodb+srv://dina:dina2703@cluster1.wtcd8.mongodb.net/node-tuts?retryWrites=true&w=majority";
+//use mongoose object to connect to the database
+mongoose
+  .connect(dbURI)
+  .then((result) => app.listen(3000))
+  .catch((err) => console.log(err));
 
 //create custom middleware. call next() method at the end of your middleware code, in order to move to the next coming code block(below the middleware code block, which is route handlers in this case)
 // app.use((req, res, next) => {
